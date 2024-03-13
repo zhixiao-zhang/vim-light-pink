@@ -16,7 +16,7 @@ colorscheme light-pink
 
 ## Example
 
-![Example](./example.png)
+![Example](./images/example.png)
 
 ## Contribute
 
