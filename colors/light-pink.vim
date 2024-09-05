@@ -8,8 +8,8 @@ endif
 
 let g:colors_name = 'light-pink'
 
-"hi Normal ctermfg=188 ctermbg=235 cterm=NONE guifg=NONE guibg=#f5f5f5
-hi Normal NONE
+hi Normal ctermfg=188 ctermbg=235 cterm=NONE guifg=NONE guibg=#f3ead3
+"hi Normal NONE
 hi Function ctermfg=221 ctermbg=NONE cterm=bold guifg=#9d3c5e guibg=NONE gui=bold
 hi Conditional ctermfg=172 ctermbg=NONE cterm=NONE guifg=#E17092 guibg=NONE gui=bold
 hi Type ctermfg=172 ctermbg=NONE cterm=bold guifg=#9466AA guibg=NONE gui=bold
