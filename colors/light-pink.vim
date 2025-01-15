@@ -1,3 +1,4 @@
+vim9script
 highlight clear
 if exists("syntax_on")
     syntax reset
@@ -6,78 +7,87 @@ if has('termguicolors')
     set termguicolors
 endif
 
-let g:colors_name = 'light-pink'
+g:colors_name = 'light-pink'
 
-hi Normal ctermfg=188 ctermbg=235 cterm=NONE guifg=#9466aa guibg=#f3ead3
-"hi Normal NONE
-hi Function ctermfg=221 ctermbg=NONE cterm=bold guifg=#9d3c5e guibg=NONE gui=bold
-hi Conditional ctermfg=172 ctermbg=NONE cterm=NONE guifg=#e17092 guibg=NONE gui=bold
-hi Type ctermfg=172 ctermbg=NONE cterm=bold guifg=#9466aa guibg=NONE gui=bold
-hi Constant ctermfg=103 ctermbg=NONE cterm=NONE guifg=#b08B35 guibg=NONE gui=NONE
-hi Comment ctermfg=244 ctermbg=NONE cterm=italic guifg=#ba9ab9 guibg=NONE gui=italic
-hi Identifier ctermfg=222 ctermbg=NONE cterm=NONE guifg=#9466aa guibg=NONE gui=NONE
-hi Keyword ctermfg=172 ctermbg=NONE cterm=NONE guifg=#e17092 guibg=NONE gui=NONE
-hi Operator ctermfg=250 ctermbg=NONE cterm=NONE guifg=#777777 guibg=NONE gui=NONE
-hi Number ctermfg=67 ctermbg=NONE cterm=NONE guifg=#b08b35 guibg=NONE gui=NONE
-hi PreProc ctermfg=172 ctermbg=NONE cterm=NONE guifg=#e17092 guibg=NONE gui=bold
-hi Label ctermfg=103 ctermbg=NONE cterm=NONE guifg=#e17092 guibg=NONE gui=NONE
-hi Statement ctermfg=172 ctermbg=NONE cterm=NONE guifg=#e17092 guibg=NONE gui=NONE
-hi StorageClass ctermfg=172 ctermbg=NONE cterm=NONE guifg=#e17092 guibg=NONE gui=NONE
-hi Macro ctermbg=172 ctermbg=NONE cterm=NONE guifg=#e17092 guibg=NONE gui=NONE
-hi CursorLineNr ctermfg=NONE ctermbg=24 cterm=NONE guifg=#c46b81 guibg=NONE gui=NONE
-hi LineNr ctermfg=60 ctermbg=236 cterm=NONE guifg=#9466aa guibg=#f3ead3 gui=NONE
-hi CursorLine ctermfg=NONE ctermbg=236 cterm=NONE guifg=NONE guibg=#ede8fd gui=NONE
-hi Visual ctermfg=NONE ctermbg=24 cterm=NONE guifg=NONE guibg=#d6d1e8 gui=NONE
-hi Search ctermfg=188 ctermbg=24 guifg=NONE guibg=#f3d5b9 gui=none
-hi IncSearch term=reverse ctermfg=188 ctermbg=24 guifg=NONE guibg=#f3d5b9 gui=none
-hi String ctermfg=65 ctermbg=NONE cterm=NONE guifg=#3B726c guibg=NONE gui=NONE
-hi VertSplit ctermfg=60 ctermbg=236 cterm=NONE guifg=#555555 guibg=#f5f5f5 gui=NONE
-hi Title guifg=#e17092 guibg=NONE gui=bold
-hi Error guifg=NONE guibg=#783836 gui=NONE term=NONE
-hi MatchParen guibg=gray
-hi Special guifg=#70ba89 guibg=NONE gui=NONE
-hi FoldColumn guifg=#9d3c5e guibg=#f3ead3
-hi Folded guifg=#c46b81 guibg=#ede8fd
+def Highlight(group: string, fg: string, bg: string, style: string)
+  const gui = (style == '' ? '' : 'cterm=' .. style)
+  const guifg = (fg == '' ? '' : 'guifg=' .. fg)
+  const guibg = (bg == '' ? '' : 'guibg=' .. bg)
+  exec 'hi ' .. group .. ' ' .. guibg .. ' ' .. guifg  .. ' ' .. gui
+enddef
 
-hi Pmenu guifg=NONE guibg=#f3ead3 gui=NONE
-" This attribute is overrided by CocMenuSel
-"hi PmenuSel term=reverse guifg=#E17092 guibg=NONE gui=NONE
-hi PmenuSbar  ctermfg=NONE ctermbg=24 guifg=NONE guibg=#f5f5f5
-hi PmenuThumb ctermfg=59 ctermbg=NONE guifg=NONE guibg=#8e9292
-hi ErrorMsg ctermfg=15 ctermbg=88 cterm=NONE guifg=#ffffff guibg=#990000 gui=NONE
-hi CursorColumn guifg=NONE guibg=#cdc9c9
-"hi SignColumn guibg=#f5f5f5
-hi SignColumn NONE
-hi NonText guifg=#f5f5f5
+def HighlightLink(from: string, to: string)
+  exec 'hi! link ' .. from .. ' ' .. to
+enddef
 
-" Coc highlight setting
-hi CocMenuSel term=reverse guifg=NONE guibg=#ede8fd gui=NONE
-hi CocErrorFloat guifg=#f1897f guibg=#ede8fd
-hi CocErrorVirtualText guifg=#f1897f gui=NONE
-hi CocErrorSign guifg=#ff0000
-hi CocSearch guifg=#e17092
-hi link CocSemMacro Function
-hi link CocSemTypeMacro Function
-hi link CocSemTypeClass Type
-hi CocInlayHint guifg=#736a6D
-hi link CocFloating Normal 
+const Colors = [
+  '#BA9AB9', '#F1897F', '#777777', '#E17092',
+  '#9466AA', '#9D3C5E', '#B08B35', '#1F6E89',
+  '#FF7AB3', '#F5F5F5', '#D6D1E8', '#736A6D',
+  '#C46B81', '#F3D5B9', '#555555', '#F2F8FC',
+  '#93C6D6', '#FFEAEA', '#C73D20', '#B08B35',
+  '#1F6E89'
+]
 
-" C 
-hi cFormat guibg=NONE guifg=#b08b35 gui=NONE
-hi cSpecial guibg=NONE guifg=#777777 gui=NONE
+const highlights = [
+  { group: 'Normal', fg: '', bg: Colors[9], style: '' },
+  { group: 'Comment', fg: Colors[0], bg: '', style: 'italic' },
+  { group: 'Error', fg: Colors[1], bg: Colors[17], style: '' },
+  { group: 'Operator', fg: Colors[2], bg: '', style: '' },
+  { group: 'Keyword', fg: Colors[3], bg: '', style: '' },
+  { group: 'PreProc', fg: Colors[3], bg: '', style: 'bold' },
+  { group: 'Identifier', fg: Colors[4], bg: '', style: '' },
+  { group: 'Type', fg: Colors[4], bg: '', style: 'bold' },
+  { group: 'Function', fg: Colors[5], bg: '', style: 'bold' },
+  { group: 'Constant', fg: Colors[6], bg: '', style: '' },
+  { group: 'String', fg: Colors[7], bg: '', style: '' },
+  { group: 'StatusLine', fg: Colors[9], bg: Colors[8], style: '' },
+  { group: 'SignColumn', fg: '', bg: Colors[9], style: '' },
+  { group: 'CursorLine', fg: '', bg: Colors[10], style: '' },
+  { group: 'LineNr', fg: Colors[11], bg: '', style: '' },
+  { group: 'CursorLineNr', fg: Colors[12], bg: '', style: '' },
+  { group: 'Search', fg: '', bg: Colors[13], style: '' },
+  { group: 'VertSplit', fg: Colors[14], bg: Colors[9], style: '' },
+  { group: 'Pmenu', fg: '', bg: Colors[15], style: '' },
+  { group: 'PmenuSel', fg: '', bg: Colors[16], style: '' },
+  { group: 'DiffDelete', fg: Colors[18], bg: '', style: '' },
+  { group: 'DiffChange', fg: Colors[19], bg: '', style: '' },
+  { group: 'DiffAdd', fg: Colors[20], bg: '', style: '' },
+  { group: 'DiffAdd', fg: '', bg: 'Gray', style: '' },
+  { group: 'MatchParen', fg: '', bg: 'Gray', style: '' },
+  { group: 'ErrorMsg', fg: 'Red', bg: '', style: '' },
+]
 
-" vim
-hi def link vimUserCmd vimUserCommand
-hi def link vimUsrCmd vimUserCommand
-hi def link vimUserFunc Function
-hi def link vimFunction Function
+const highlightlinks = [
+  { from: 'NonText', to: 'Comment' },
+  { from: 'Folded', to: 'Comment' },
+  { from: 'Whitespace', to: 'Comment' },
+  { from: 'Repeat', to: 'Conditional' },
+  { from: 'CursorLineNr', to: 'Identifier' },
+  { from: 'Conditional', to: 'Operator' },
+  { from: 'Macro', to: 'Function' },
+  { from: 'Statement', to: 'Keyword' },
+  { from: 'Operator', to: 'Keyword' },
+  { from: 'Title', to: 'Keyword' },
+  { from: 'Special', to: 'Keyword' },
+  { from: 'Label', to: 'Keyword' },
+  { from: 'StorageClass', to: 'Keyword' },
+  { from: 'Structure', to: 'Keyword' },
+  { from: 'ColorColumn', to: 'CursorLine' },
+  { from: 'Visual', to: 'CursorLine' },
+  { from: 'Number', to: 'Constant' },
+  { from: 'Wildmenu', to: 'SignColumn' },
+  { from: 'IncSearch', to: 'Search' },
+  { from: 'StatusLineNC', to: 'StatusLine' }
+]
 
-" shCaseLabel
-hi shCaseLabel guifg=#f0b04a guibg=NONE gui=NONE
+for hl in highlights
+  Highlight(hl.group, hl.fg, hl.bg, hl.style)
+endfor
 
-" statusline
-hi StatusLine guifg=#ede8fd guibg=#e17092 gui=bold
-hi StatusLineNC guifg=#ede8fd guibg=#e17092 gui=bold
-hi StatusLineSeparator guifg=#f5f5f5
-hi User1 guifg=#b08b35 guibg=#ede8fd
+for hll in highlightlinks
+  HighlightLink(hll.from, hll.to)
+endfor
+
 set background=light
+syntax on
