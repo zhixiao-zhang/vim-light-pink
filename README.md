@@ -22,5 +22,11 @@ colorscheme light-pink
 
 Since I primarily focus on C/C++, and Python (with limited proficiency in the latter), I welcome contributions for other languages. Additionally, feel free to submit pull requests that can enhance this color scheme.
 
+## Credit
+
+[mgwg-light-pink-theme](https://github.com/mgwg/light-pink-theme)
+
+[viniciusmuller-djanho](https://github.com/viniciusmuller/djanho)
+
 ## License
 [MIT](./LICENSE)
